@@ -5,8 +5,6 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 import io
 
-# ── Configuração do BigQuery ──────────────────────────────────────────────────
-
 KEY_PATH   = r"C:\Users\joaop\OneDrive\Documentos\Ideia3\Testes\AutomaçãoBaseManualGoogleTiktok\ChaveBigquery\basededados-428619-bd416392eb22.json"
 
 PROJECT_ID    = "basededados-428619"
@@ -14,7 +12,6 @@ DATASET       = "dados_compartilhados"
 TABELA_GOOGLE = f"{PROJECT_ID}.{DATASET}.base_manual_google"
 TABELA_TIKTOK = f"{PROJECT_ID}.{DATASET}.base_manual_tiktok"
 
-# ── Conexão com BigQuery ──────────────────────────────────────────────────────
 
 credentials = service_account.Credentials.from_service_account_file(
     KEY_PATH,
@@ -23,10 +20,9 @@ credentials = service_account.Credentials.from_service_account_file(
 client = bigquery.Client(credentials=credentials, project=PROJECT_ID)
 print("Conexão com BigQuery estabelecida com sucesso!")
 
-# ── Seleção de arquivos via interface gráfica ─────────────────────────────────
 
 root = tk.Tk()
-root.withdraw()  # Oculta a janela principal do tkinter
+root.withdraw()  
 
 print("\nSelecione o arquivo do TikTok...")
 caminho_tiktok = filedialog.askopenfilename(
@@ -46,8 +42,6 @@ if not caminho_tiktok or not caminho_google:
 
 print(f"\nTikTok: {caminho_tiktok}")
 print(f"Google: {caminho_google}")
-
-# ── Tratamento — TikTok ───────────────────────────────────────────────────────
 
 df1 = pd.read_excel(caminho_tiktok)
 
@@ -70,8 +64,6 @@ if "By Day" in df1.columns:
 print("\nTikTok — shape:", df1.shape)
 print(df1.dtypes)
 
-# ── Tratamento — Google ───────────────────────────────────────────────────────
-
 df2 = pd.read_excel(caminho_google, skiprows=2)
 
 df2 = df2.rename(columns={
@@ -91,19 +83,15 @@ df2["Valor de todas as conv"] = (
 print("\nGoogle — shape:", df2.shape)
 print(df2.dtypes)
 
-# ── Carga no BigQuery (WRITE_TRUNCATE) ────────────────────────────────────────
-
 job_config = bigquery.LoadJobConfig(
     write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE
 )
 
-# Carrega TikTok
 print("\nCarregando TikTok no BigQuery...")
 job1 = client.load_table_from_dataframe(df1, TABELA_TIKTOK, job_config=job_config)
 job1.result()
 print(f"TikTok carregado: {client.get_table(TABELA_TIKTOK).num_rows} linhas em {TABELA_TIKTOK}")
 
-# Carrega Google
 print("Carregando Google no BigQuery...")
 job2 = client.load_table_from_dataframe(df2, TABELA_GOOGLE, job_config=job_config)
 job2.result()
