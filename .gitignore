@@ -1,0 +1,11 @@
+# Ignorar a pasta com a chave do BigQuery
+ChaveBigquery/
+.ipynb_checkpoints/
+
+# Ignorar pastas de ambiente virtual (caso você crie uma)
+venv/
+.venv/
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
