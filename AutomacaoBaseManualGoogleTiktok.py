@@ -3,7 +3,7 @@ from google.cloud import bigquery
 from google.oauth2 import service_account
 
 # Caminho para o arquivo JSON da Service Account
-KEY_PATH = r"C:\Users\joaop\OneDrive\Documentos\Ideia3\Testes\AutomaçãoBaseManualGoogleTiktok\ChaveBigquery\basededados-428619-6823b2a3ccfa.json"
+KEY_PATH = r"C:\Users\joaop\OneDrive\Documentos\Ideia3\Testes\AutomaçãoBaseManualGoogleTiktok\ChaveBigquery\basededados-428619-bd416392eb22.json"
 
 PROJECT_ID     = "basededados-428619"
 DATASET        = "dados_compartilhados"
